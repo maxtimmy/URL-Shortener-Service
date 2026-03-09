@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: shortener_db
+    environment:
+      POSTGRES_DB: shortener
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shortener"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: shortener_redis
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    container_name: shortener_app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/shortener
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: supersecretkey
+      BASE_URL: http://localhost:8000
+      DEFAULT_UNUSED_DAYS: 30
+
+volumes:
+  postgres_data:
