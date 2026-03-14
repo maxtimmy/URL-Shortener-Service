@@ -2,11 +2,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/shortener"
-    REDIS_URL: str = "redis://localhost:6379/0"
-    SECRET_KEY: str = "supersecretkey"
+    DATABASE_URL: str
+    REDIS_URL: str | None = None
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     BASE_URL: str = "http://localhost:8000"
     DEFAULT_UNUSED_DAYS: int = 30
 

@@ -1,175 +1,185 @@
 
 
-URL Shortener Service
+# URL Shortener Service
 
-https://url-shortener-service-w5wi.onrender.com/docs
 
-Описание
 
 Сервис для сокращения длинных URL-адресов. Пользователь может создать короткую ссылку, использовать её для перенаправления на исходный URL, а также получать статистику переходов и управлять созданными ссылками.
 
-Сервис поддерживает:
+### Сервис поддерживает:
 
-		создание коротких ссылок
-		пользовательские alias
-		редирект по короткой ссылке
-		статистику переходов
-		поиск ссылки по исходному URL
-		обновление и удаление ссылок
-		регистрацию и авторизацию пользователей
-		кэширование популярных ссылок
-		автоматическое удаление истекших ссылок
-
-⸻
-
-Технологии
-
-Backend:
-
-	Python
-	astAPI
-	SQLAlchemy
-
-Хранилище данных:
-
-	PostgreSQL
-	Redis
-
-Инфраструктура:
-
-	Docker
-	Docker Cmpose
-
-Авторизация:
-
-	JWT
+	• создание коротких ссылок
+	• пользовательские alias
+	• редирект по короткой ссылке
+	• статистику переходов
+	• поиск ссылки по исходному URL
+	• обновление и удаление ссылок
+	• регистрацию и авторизацию пользователей
+	• кэширование популярных ссылок
+	• автоматическое удаление истекших ссылок
 
 ⸻
 
-Архитектура
+## Технологии
 
-Сервис состоит из трех основных компонентов:
+### Backend
 
-API сервис
+	• Python
+	• FastAPI
+	• SQLAlchemy
+
+### Хранилище данных
+
+	• PostgreSQL
+	• Redis
+
+### Инфраструктура
+
+	• Docker
+	• Docker Compose
+
+### Авторизация
+
+	• JWT
+
+⸻
+
+## Архитектура
+
+Сервис состоит из трех основных компонентов.
+
+### API сервис
 
 Реализован на FastAPI. Отвечает за обработку HTTP-запросов, авторизацию пользователей и бизнес-логику работы со ссылками.
 
-PostgreSQL
+### PostgreSQL
 
 Основное хранилище данных. Используется для хранения пользователей, коротких ссылок и статистики переходов.
 
-Redis
+### Redis
 
 Используется для кэширования популярных коротких ссылок с целью ускорения редиректа.
 
 ⸻
 
+## Запуск проекта
 
+### Требования
 
-Запуск проекта
+    • Docker
+    • Docker Compose
 
-Требования
-
-Установленный Docker и Docker Compose.
-
-Запуск
+### Запуск
 
 В корне проекта выполнить:
 
-	docker-compose up --build
+    docker-compose up --build
 
 После запуска сервис будет доступен по адресу:
 
-	http://localhost:8000
+    http://localhost:8000
 
 Swagger документация:
 
-	http://localhost:8000/docs
+    http://localhost:8000/docs
 
 
 ⸻
 
-API
+## Развернутый сервис
 
-Регистрация пользователя
-	
-	POST /auth/register
+Работающий сервис доступен по адресу:
+
+    https://url-shortener-service-w5wi.onrender.com
+
+Swagger документация:
+
+    https://url-shortener-service-w5wi.onrender.com/docs
+
+
+⸻
+
+## API
+
+### Регистрация пользователя
+
+    POST /auth/register
 
 Пример запроса:
-
-	{
-	  "email": "user@example.com",
-	  "password": "password123"
-	}
+    
+    {
+      "email": "user@example.com",
+      "password": "password123"
+    }
 
 Ответ:
 
-	{
-	  "access_token": "...",
-	  "token_type": "bearer"
-	}
+    {
+      "access_token": "...",
+      "token_type": "bearer"
+    }
 
 
 ⸻
 
-Авторизация
-	
-	POST /auth/login
+### Авторизация
+
+    POST /auth/login
 
 Пример запроса:
 
-	{
-	  "email": "user@example.com",
-	  "password": "password123"
-	}
+    {
+      "email": "user@example.com",
+      "password": "password123"
+    }
 
 Ответ:
 
-	{
-	  "access_token": "...",
-	  "token_type": "bearer"
-	}
+    {
+      "access_token": "...",
+      "token_type": "bearer"
+    }
 
 
 ⸻
 
-Создание короткой ссылки
+### Создание короткой ссылки
 
-	POST /links/shorten
+    POST /links/shorten
 
 Пример запроса:
 
-	{
-	  "original_url": "https://example.com/page",
-	  "custom_alias": "example",
-	  "expires_at": "2026-03-15T18:30:00"
-	}
+    {
+      "original_url": "https://example.com/page",
+      "custom_alias": "example",
+      "expires_at": "2026-03-15T18:30:00"
+    }
 
 Ответ:
 
-	{
-	  "original_url": "https://example.com/page",
-	  "short_code": "example",
-	  "short_url": "http://localhost:8000/example",
-	  "created_at": "...",
-	  "expires_at": "...",
-	  "is_guest": false
-	}
+    {
+      "original_url": "https://example.com/page",
+      "short_code": "example",
+      "short_url": "http://localhost:8000/example",
+      "created_at": "...",
+      "expires_at": "...",
+      "is_guest": false
+    }
 
 
 ⸻
 
-Переход по короткой ссылке
+### Переход по короткой ссылке
 
-	GET /{short_code}
+    GET /{short_code}
 
 Перенаправляет пользователя на исходный URL.
 
 ⸻
 
-Получение статистики
+### Получение статистики
 
-	GET /links/{short_code}/stats
+    GET /links/{short_code}/stats
 
 Ответ содержит:
 
@@ -180,91 +190,79 @@ API
 
 ⸻
 
-Поиск ссылки по исходному URL
+### Поиск ссылки
 
-	GET /links/search?original_url={url}
+
+    GET /links/search?original_url={url}
 
 
 ⸻
 
-Обновление ссылки
+### Обновление ссылки
 
-	PUT /links/{short_code}
+    PUT /links/{short_code}
 
-Позволяет изменить исходный URL или короткий код.
+Позволяет изменить:
+
+	• исходный URL
+	• короткий код
 
 ⸻
 
 Удаление ссылки
 
-	DELETE /links/{short_code}
+    DELETE /links/{short_code}
 
 Удаление доступно только владельцу ссылки.
 
 ⸻
 
-База данных
+## База данных
 
-Таблица users
+### Таблица users
 
-	поле	описание
-	
-	id	идентификатор пользователя
-	
-	email	email пользователя
-	
-	password_hash	хэш пароля
-	
-	created_at	дата регистрации
+    поле	        описание
+    id	        идентификатор пользователя
+    email	        email пользователя
+    password_hash	хэш пароля
+    created_at	дата регистрации
 
 
 ⸻
 
-Таблица links
+### Таблица links
 
-	поле	описание
-	
-	id	идентификатор ссылки
-	
-	original_url	исходный URL
-	
-	short_code	короткий код
-	
-	custom_alias	пользовательский alias
-	
-	click_count	количество переходов
-	
-	created_at	дата создания
-	
-	last_used_at	дата последнего использования
-	
-	expires_at	время истечения
-	
-	owner_id	владелец ссылки
+    поле	        описание
+    id	        идентификатор ссылки
+    original_url	исходный URL
+    short_code	короткий код
+    custom_alias	пользовательский alias
+    click_count	количество переходов
+    created_at	дата создания
+    last_used_at	дата последнего использования
+    expires_at	время истечения
+    owner_id	владелец ссылки
 
 
 ⸻
 
-Таблица expired_link_history
+### Таблица expired_link_history
 
 Хранит информацию об истекших или автоматически удаленных ссылках.
 
 ⸻
 
-Кэширование
+### Кэширование
 
-'Redis используется для кэширования популярных коротких ссылок.
+Redis используется для кэширования популярных коротких ссылок.
 
 После нескольких переходов ссылка помещается в кэш, что позволяет ускорить редирект без обращения к базе данных.
 
 При обновлении или удалении ссылки соответствующий кэш очищается.
-'
-
-
 
 ⸻
 
-Автоматическая очистка ссылок
+### Автоматическая очистка ссылок
 
 Фоновая задача выполняет:
 
@@ -275,11 +273,97 @@ API
 
 ⸻
 
-Пример использования
+## **Тестирование**
 
-	1.	зарегистрировать пользователя
-	2.	получить JWT токен
-	3.	создать короткую ссылку
-	4.	использовать короткую ссылку для редиректа
-	5.	получить статистику переходов
-	6.	обновить или удалить ссылку
+Для проекта реализованы:
+
+        •	unit-тесты
+        •	функциональные тесты API
+        •	тесты негативных сценариев
+
+Покрытие кода тестами:
+
+    92%
+
+Запуск тестов
+
+    pytest
+
+Проверка покрытия
+
+    pytest --cov=app --cov-report=term --cov-report=html
+
+HTML-отчет создается в папке:
+
+    htmlcov/
+
+
+⸻
+
+# **_Нагрузочное тестирование_**
+
+Для проверки поведения сервиса под нагрузкой использовался Locust.
+
+Запуск
+
+    locust -f locustfile.py
+
+Интерфейс Locust:
+
+    http://localhost:8089
+
+Нагрузочный сценарий включает:
+
+	•	создание коротких ссылок
+	•	поиск ссылок по исходному URL
+	•	параллельные пользовательские запросы
+
+
+![Снимок экрана 2026-03-15 в 00.15.10.png](../../Desktop/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202026-03-15%20%D0%B2%2000.15.10.png)
+
+## Структура проекта
+
+    app/
+        routers/
+            auth.py
+            links.py
+        cache.py
+        config.py
+        db.py
+        deps.py
+        models.py
+        schemas.py
+        security.py
+        tasks.py
+        utils.py
+        main.py
+    
+    tests/
+        test_auth.py
+        test_links.py
+        test_links_negative.py
+        test_cache.py
+        test_deps.py
+        test_security.py
+        test_utils.py
+        test_tasks.py
+        test_main.py
+    
+    locustfile.py
+    docker-compose.yml
+    pytest.ini
+    requirements.txt
+    requirements-dev.txt
+
+
+⸻
+
+## Пример использования
+
+        1.	зарегистрировать пользователя
+        2.	получить JWT токен
+        3.	создать короткую ссылку
+        4.	использовать короткую ссылку для редиректа
+        5.	получить статистику переходов
+        6.	обновить или удалить ссылку
+
