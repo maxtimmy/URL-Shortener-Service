@@ -1,0 +1,11 @@
+pytest
+pytest-cov
+httpx
+pytest-mock
+locust
+fastapi
+uvicorn
+httpx
+pytest
+pytest-cov
+pytest-mock
